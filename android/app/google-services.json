@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "234030104187",
+    "project_id": "kyueapp",
+    "storage_bucket": "kyueapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:234030104187:android:bd76d4df1ee6c408716cde",
+        "android_client_info": {
+          "package_name": "com.mhk.kyue_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "234030104187-hoi684hii5f3ackgcc2o65l1efafts4s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXbpPFhJSBFP5AgXnM7iQ9wQ2p7d8whxE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "234030104187-hoi684hii5f3ackgcc2o65l1efafts4s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:234030104187:android:0952e760a15caf9e716cde",
+        "android_client_info": {
+          "package_name": "com.mhk.kyueapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "234030104187-hoi684hii5f3ackgcc2o65l1efafts4s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXbpPFhJSBFP5AgXnM7iQ9wQ2p7d8whxE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "234030104187-hoi684hii5f3ackgcc2o65l1efafts4s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
