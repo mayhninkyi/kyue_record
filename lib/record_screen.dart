@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kyue_app/database.dart';
+import 'package:kyue_app/record_list_screen.dart';
 import 'package:kyue_app/style.dart';
 
 class RecordScreen extends StatelessWidget {
@@ -28,21 +29,34 @@ class RecordScreen extends StatelessWidget {
                 itemCount: dataList?.docs.length,
                 itemBuilder: (context, index) {
                   return Container(
-                    padding: const EdgeInsets.all(15),
                     margin:
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
                         color: Colors.blueGrey,
                         borderRadius: BorderRadius.circular(15)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                      Text(
-                        dataList!.docs[index].id,
-                        style: kTextStyleTitle(22),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RecordListScreen(
+                                    docId: dataList.docs[index].id)));
+                      },
+                      child: ListTile(
+                        title: Text(
+                          dataList!.docs[index].id,
+                          style: kTextStyleTitle(22),
+                        ),
+                        subtitle: Text(
+                          '${dataList.docs[index].data()['total']} ',
+                          style: kTextStyleTitle(18),
+                        ),
+                        trailing: const Icon(
+                          Icons.arrow_forward_ios,
+                          color: Colors.white,
+                        ),
                       ),
-                      
-                    ]),
+                    ),
                   );
                 });
           }

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Record {
   String? tableName;
   DateTime? startDate;
@@ -25,8 +27,8 @@ class Record {
   factory Record.fromJSON(Map<dynamic, dynamic> json) {
     return Record(
         tableName: json["table_name"] ?? '1',
-        startDate: json["startDate"],
-        endDate: json["endDate"],
+        startDate: (json["startDate"] as Timestamp).toDate(),
+        endDate: (json["endDate"] as Timestamp).toDate(),
         total: json["total"] ?? 0,
         beerCount: json["beer"] ?? 0,
         cigaretteCount: json["cigarette"] ?? 0,

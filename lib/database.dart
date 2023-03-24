@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:kyue_app/product.dart';
 import 'package:kyue_app/record.dart';
 
+import 'style.dart';
+
 class Database {
   final db = FirebaseFirestore.instance;
   List<Product> products = [];
@@ -27,14 +29,30 @@ class Database {
   }
 
   Future<void> addRecord(Record record) async {
-    String docId =
-        '${record.startDate!.year}-${record.startDate!.month}-${record.startDate!.day}';
+    String docId = formatDate(record.startDate ?? DateTime.now());
     try {
       await db
           .collection('record')
           .doc(docId)
           .collection('records')
           .add(record.toJson());
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  Future<void> updateCache(Record record) async {
+    String docId = record.tableName ?? '';
+    try {
+      await db.collection('cache').doc(docId).set(record.toJson());
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  Future<void> deleteCache(String docId) async {
+    try {
+      await db.collection('cache').doc(docId).delete();
     } catch (e) {
       debugPrint(e.toString());
     }

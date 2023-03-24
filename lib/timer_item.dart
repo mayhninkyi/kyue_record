@@ -20,6 +20,7 @@ class _TimerItemState extends State<TimerItem> {
   List<Product> products = [];
   int total = 0;
   Record record = Record();
+  int timerPrice = 0;
 
   @override
   void initState() {
@@ -30,10 +31,13 @@ class _TimerItemState extends State<TimerItem> {
   void startTimer() {
     startTime = DateTime.now();
     record.startDate = startTime;
+    record.tableName = (widget.index + 1).toString();
+    database.updateCache(record);
     countdownTimer = Timer.periodic(const Duration(seconds: 1), (value) {
       var now = DateTime.now();
       var difference = now.difference(startTime ?? DateTime.now());
       setState(() {
+        timerPrice = ((difference.inSeconds / 3600) * 200).round();
         timer =
             '${(difference.inHours % 24).toString().padLeft(2, '0')} : ${(difference.inMinutes % 60).toString().padLeft(2, '0')} : ${(difference.inSeconds % 60).toString().padLeft(2, '0')}';
       });
@@ -43,13 +47,15 @@ class _TimerItemState extends State<TimerItem> {
   void stopTimer() {
     countdownTimer!.cancel();
     record.endDate = DateTime.now();
-    record.tableName = (widget.index + 1).toString();
+    record.total = (record.total ?? 0) + timerPrice;
     database.addRecord(record);
     setState(() {
       timer = '00 : 00 : 00';
       total = 0;
+      timerPrice = 0;
     });
     record = Record();
+    database.deleteCache(record.tableName ?? '');
     Navigator.pop(context);
   }
 
@@ -122,7 +128,8 @@ class _TimerItemState extends State<TimerItem> {
       }
       total += val.price * val.count;
     }
-    record.total = total;
+    record.total = total + timerPrice;
+    database.updateCache(record);
   }
 
   showDetail() {
@@ -207,6 +214,16 @@ class _TimerItemState extends State<TimerItem> {
                   ),
                   Row(
                     children: [
+                      const Spacer(),
+                      Text(
+                        '$timerPrice',
+                        style: kTextStyleTitle(30),
+                      ),
+                      kHorizontalSpace(12),
+                    ],
+                  ),
+                  Row(
+                    children: [
                       kHorizontalSpace(12),
                       Text(
                         'Total',
@@ -214,7 +231,7 @@ class _TimerItemState extends State<TimerItem> {
                       ),
                       const Spacer(),
                       Text(
-                        '$total',
+                        '${total + timerPrice}',
                         style: kTextStyleTitle(30),
                       ),
                       kHorizontalSpace(12),

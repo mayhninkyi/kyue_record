@@ -10,10 +10,17 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.refresh,
+              color: Colors.white,
+            )),
         title: Text(
           'Home',
           style: kTextStyleTitle(22),
         ),
+        centerTitle: true,
         actions: [
           IconButton(
               onPressed: () {
