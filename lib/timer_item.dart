@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:kyue_app/database.dart';
 import 'package:kyue_app/product.dart';
+import 'package:kyue_app/record.dart';
 import 'package:kyue_app/style.dart';
 
 class TimerItem extends StatefulWidget {
@@ -18,6 +19,7 @@ class _TimerItemState extends State<TimerItem> {
   String timer = '00 : 00 : 00';
   List<Product> products = [];
   int total = 0;
+  Record record = Record();
 
   @override
   void initState() {
@@ -27,6 +29,7 @@ class _TimerItemState extends State<TimerItem> {
 
   void startTimer() {
     startTime = DateTime.now();
+    record.startDate = startTime;
     countdownTimer = Timer.periodic(const Duration(seconds: 1), (value) {
       var now = DateTime.now();
       var difference = now.difference(startTime ?? DateTime.now());
@@ -39,15 +42,15 @@ class _TimerItemState extends State<TimerItem> {
 
   void stopTimer() {
     countdownTimer!.cancel();
+    record.endDate = DateTime.now();
+    record.tableName = (widget.index + 1).toString();
+    database.addRecord(record);
     setState(() {
       timer = '00 : 00 : 00';
       total = 0;
     });
+    record = Record();
     Navigator.pop(context);
-  }
-
-  void clearData() {
-    timer = '00 : 00 : 00';
   }
 
   @override
@@ -97,8 +100,29 @@ class _TimerItemState extends State<TimerItem> {
   update() {
     total = 0;
     for (var val in products) {
+      switch (val.name) {
+        case 'Drink100':
+          record.drink100Count = val.count;
+          break;
+        case 'Pocker':
+          record.pockerCount = val.count;
+          break;
+        case 'Beer':
+          record.beerCount = val.count;
+          break;
+        case 'Water':
+          record.waterCount = val.count;
+          break;
+        case 'Cigerette':
+          record.cigaretteCount = val.count;
+          break;
+        case 'Drink50':
+          record.drink50Count = val.count;
+          break;
+      }
       total += val.price * val.count;
     }
+    record.total = total;
   }
 
   showDetail() {

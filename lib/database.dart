@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kyue_app/product.dart';
+import 'package:kyue_app/record.dart';
 
 class Database {
   final db = FirebaseFirestore.instance;
@@ -20,6 +21,20 @@ class Database {
           products.add(Product.fromJSON(val.data()));
         }
       }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  Future<void> addRecord(Record record) async {
+    String docId =
+        '${record.startDate!.year}-${record.startDate!.month}-${record.startDate!.day}';
+    try {
+      await db
+          .collection('record')
+          .doc(docId)
+          .collection('records')
+          .add(record.toJson());
     } catch (e) {
       debugPrint(e.toString());
     }
