@@ -8,9 +8,10 @@ class Record {
   int? beerCount;
   int? cigaretteCount;
   int? drink50Count;
-  int? drink100Count;
+  int? lighterCount;
   int? pockerCount;
   int? waterCount;
+  String? note;
 
   Record(
       {this.tableName,
@@ -20,22 +21,26 @@ class Record {
       this.beerCount,
       this.cigaretteCount,
       this.drink50Count,
-      this.drink100Count,
+      this.lighterCount,
       this.waterCount,
-      this.pockerCount});
+      this.pockerCount,
+      this.note});
 
   factory Record.fromJSON(Map<dynamic, dynamic> json) {
     return Record(
         tableName: json["table_name"] ?? '1',
         startDate: (json["startDate"] as Timestamp).toDate(),
-        endDate: (json["endDate"] as Timestamp).toDate(),
+        endDate: json["endDate"] != null
+            ? (json["endDate"] as Timestamp).toDate()
+            : null,
         total: json["total"] ?? 0,
         beerCount: json["beer"] ?? 0,
         cigaretteCount: json["cigarette"] ?? 0,
         drink50Count: json["drink50"] ?? 0,
-        drink100Count: json["drink100"] ?? 0,
+        lighterCount: json["lighter"] ?? 0,
         waterCount: json["water"] ?? 0,
-        pockerCount: json["pocker"] ?? 0);
+        pockerCount: json["pocker"] ?? 0,
+        note: json["note"] ?? '');
   }
 
   Map<String, dynamic> toJson() {
@@ -47,9 +52,10 @@ class Record {
     data["beer"] = beerCount;
     data['cigarette'] = cigaretteCount;
     data['drink50'] = drink50Count;
-    data['drink100'] = drink100Count;
+    data['lighter'] = lighterCount;
     data["water"] = waterCount;
     data["pocker"] = pockerCount;
+    data["note"] = note;
     return data;
   }
 }

@@ -45,12 +45,12 @@ class RecordDetail extends StatelessWidget {
               border: Border.all(color: Colors.grey),
               borderRadius: BorderRadius.circular(15)),
           child: Column(children: [
-            _itemWidget('Drink50', 50, record.drink50Count ?? 0),
-            _itemWidget('Drink100', 100, record.drink100Count ?? 0),
-            _itemWidget('Beer', 100, record.beerCount ?? 0),
-            _itemWidget('Water', 10, record.waterCount ?? 0),
-            _itemWidget('Cigrette', 50, record.cigaretteCount ?? 0),
-            _itemWidget('Pocker', 30, record.pockerCount ?? 0),
+            _itemWidget('အအေး', 50, record.drink50Count ?? 0),
+            _itemWidget('မီးခြစ်', 20, record.lighterCount ?? 0),
+            _itemWidget('ဘီယာ', 70, record.beerCount ?? 0),
+            _itemWidget('ရေသန့်', 10, record.waterCount ?? 0),
+            _itemWidget('ဆေးလိပ်', 100, record.cigaretteCount ?? 0),
+            _itemWidget('ဖဲ', 30, record.pockerCount ?? 0),
           ]),
         ),
         Container(

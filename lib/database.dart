@@ -6,9 +6,24 @@ import 'style.dart';
 
 class Database {
   final db = FirebaseFirestore.instance;
+  List<Record> caches = [];
 
   Database._();
 
+  Future<List<Record>> fetchCache() async {
+    caches = [];
+    try {
+      final snapshot = await db.collection('cache').get();
+      if (snapshot.docs.isNotEmpty) {
+        for (var val in snapshot.docs) {
+          caches.add(Record.fromJSON(val.data()));
+        }
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    return caches;
+  }
 
   Future<void> addRecord(Record record) async {
     String docId = formatDate(record.startDate ?? DateTime.now());
@@ -21,7 +36,7 @@ class Database {
       await db
           .collection('record')
           .doc(docId)
-          .set({'total': total + (record.total?? 0)});
+          .set({'total': total + (record.total ?? 0)});
       await db
           .collection('record')
           .doc(docId)

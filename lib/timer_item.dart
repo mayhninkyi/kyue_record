@@ -6,7 +6,8 @@ import 'package:kyue_app/style.dart';
 
 class TimerItem extends StatefulWidget {
   final int index;
-  const TimerItem({super.key, required this.index});
+  final Record recordData;
+  const TimerItem({super.key, required this.index, required this.recordData});
 
   @override
   State<TimerItem> createState() => _TimerItemState();
@@ -19,17 +20,18 @@ class _TimerItemState extends State<TimerItem> {
   Record record = Record();
   ValueNotifier<int> total = ValueNotifier(0);
   ValueNotifier<int> timerPrice = ValueNotifier(0);
-  ValueNotifier<int> drink100Count = ValueNotifier(0);
+  ValueNotifier<int> lighterCount = ValueNotifier(0);
   ValueNotifier<int> drink50Count = ValueNotifier(0);
   ValueNotifier<int> beerCount = ValueNotifier(0);
   ValueNotifier<int> waterCount = ValueNotifier(0);
   ValueNotifier<int> cigretteCount = ValueNotifier(0);
   ValueNotifier<int> pockerCount = ValueNotifier(0);
   int tableNo = 0;
+  TextEditingController controller = TextEditingController();
 
   @override
   void initState() {
-    tableNo = widget.index + 1;
+    initData();
     super.initState();
   }
 
@@ -38,8 +40,32 @@ class _TimerItemState extends State<TimerItem> {
     super.dispose();
   }
 
+  void initData() {
+    tableNo = widget.index + 1;
+    record = widget.recordData;
+    if (record.startDate != null) {
+      drink50Count.value = record.drink50Count ?? 0;
+      lighterCount.value = record.lighterCount ?? 0;
+      beerCount.value = record.beerCount ?? 0;
+      waterCount.value = record.waterCount ?? 0;
+      pockerCount.value = record.pockerCount ?? 0;
+      cigretteCount.value = record.cigaretteCount ?? 0;
+      total.value = (drink50Count.value * 50) +
+          (beerCount.value * 70) +
+          (cigretteCount.value * 100) +
+          (waterCount.value * 10) +
+          (pockerCount.value * 30) +
+          (lighterCount.value * 20);
+      startTimer();
+    }
+  }
+
   void startTimer() {
-    startTime = DateTime.now();
+    if (record.startDate != null) {
+      startTime = record.startDate;
+    } else {
+      startTime = DateTime.now();
+    }
     record.startDate = startTime;
     record.tableName = tableNo.toString();
     database.updateCache(record);
@@ -66,7 +92,7 @@ class _TimerItemState extends State<TimerItem> {
     timer.value = '00 : 00 : 00';
     total.value = 0;
     timerPrice.value = 0;
-    drink100Count.value = 0;
+    lighterCount.value = 0;
     drink50Count.value = 0;
     beerCount.value = 0;
     waterCount.value = 0;
@@ -91,15 +117,40 @@ class _TimerItemState extends State<TimerItem> {
             return Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Table $tableNo',
-                  style: kTextStyleTitle(32),
+                Row(
+                  children: [
+                    const Spacer(),
+                    Text(
+                      'Table $tableNo',
+                      style: kTextStyleTitle(32),
+                    ),
+                    const Spacer(),
+                    value == '00 : 00 : 00'
+                        ? Container()
+                        : CircleAvatar(
+                            radius: 15,
+                            backgroundColor: Colors.black,
+                            child: IconButton(
+                                onPressed: () {
+                                  _displayDialog(context);
+                                },
+                                icon: const Icon(
+                                  Icons.edit,
+                                  size: 12,
+                                )))
+                  ],
                 ),
-                const Icon(
-                  Icons.timer,
-                  color: Colors.black,
-                  size: 50,
-                ),
+                (record.note == '' || record.note == null)
+                    ? const Icon(
+                        Icons.timer,
+                        color: Colors.black,
+                        size: 50,
+                      )
+                    : Text(
+                        record.note ?? '',
+                        maxLines: 2,
+                        style: kTextStyleTitle(16),
+                      ),
                 Text(
                   value,
                   style: kTextStyleTitle(32),
@@ -124,9 +175,41 @@ class _TimerItemState extends State<TimerItem> {
     );
   }
 
+  Future<void> _displayDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Add note....'),
+            content: TextField(
+              onChanged: (value) {
+                record.note = value;
+              },
+              controller: controller,
+              decoration: const InputDecoration(hintText: ""),
+            ),
+            actions: [
+              ElevatedButton(
+                  style:
+                      ElevatedButton.styleFrom(backgroundColor: Colors.black54),
+                  onPressed: () {
+                    setState(() {
+                      Navigator.pop(context);
+                    });
+                    update();
+                  },
+                  child: Text(
+                    'SAVE',
+                    style: kTextStyleTitle(22),
+                  ))
+            ],
+          );
+        });
+  }
+
   update() {
     record.drink50Count = drink50Count.value;
-    record.drink100Count = drink100Count.value;
+    record.lighterCount = lighterCount.value;
     record.beerCount = beerCount.value;
     record.waterCount = waterCount.value;
     record.cigaretteCount = cigretteCount.value;
@@ -208,12 +291,12 @@ class _TimerItemState extends State<TimerItem> {
                 return SafeArea(
                   child: Wrap(
                     children: [
-                      _productItem(drink50Count, 'Drink 50', 50),
-                      _productItem(drink100Count, 'Drink 100', 100),
-                      _productItem(waterCount, 'Water', 10),
-                      _productItem(beerCount, 'Beer', 70),
-                      _productItem(cigretteCount, 'Cigrette', 100),
-                      _productItem(pockerCount, 'Pocker', 30),
+                      _productItem(drink50Count, 'အအေး', 50),
+                      _productItem(beerCount, 'ဘီယာ', 70),
+                      _productItem(cigretteCount, 'ဆေးလိပ် ', 100),
+                      _productItem(waterCount, 'ရေသန့်', 10),
+                      _productItem(pockerCount, 'ဖဲ ', 30),
+                      _productItem(lighterCount, 'မီးခြစ်', 20),
                       const Divider(
                         color: Colors.white,
                       ),

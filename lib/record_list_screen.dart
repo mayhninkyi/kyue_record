@@ -22,6 +22,7 @@ class RecordListScreen extends StatelessWidget {
             .collection('record')
             .doc(docId)
             .collection('records')
+            .orderBy('endDate', descending: true)
             .snapshots(),
         builder: ((context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting ||
