@@ -1,36 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:kyue_app/product.dart';
 import 'package:kyue_app/record.dart';
 
 import 'style.dart';
 
 class Database {
   final db = FirebaseFirestore.instance;
-  List<Product> products = [];
 
   Database._();
 
-  init() {
-    fetchProducts();
-  }
-
-  Future<void> fetchProducts() async {
-    try {
-      var snapshot = await db.collection('product').get();
-      if (snapshot.docs.isNotEmpty) {
-        for (var val in snapshot.docs) {
-          products.add(Product.fromJSON(val.data()));
-        }
-      }
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-  }
 
   Future<void> addRecord(Record record) async {
     String docId = formatDate(record.startDate ?? DateTime.now());
     try {
+      final snapshot = await db.collection('record').doc(docId).get();
+      int total = 0;
+      if (snapshot.exists) {
+        total = snapshot.data()!['total'];
+      }
+      await db
+          .collection('record')
+          .doc(docId)
+          .set({'total': total + (record.total?? 0)});
       await db
           .collection('record')
           .doc(docId)

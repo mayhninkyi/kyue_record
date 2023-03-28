@@ -9,6 +9,10 @@ TextStyle kTextStyleTitle(double size) {
       height: 1.5);
 }
 
+TextStyle kTextStyleBlackColor(double size) {
+  return TextStyle(fontSize: size, color: Colors.black, height: 1.5);
+}
+
 Widget kVerticalSpace(double height) {
   return SizedBox(
     height: height,
@@ -23,4 +27,8 @@ Widget kHorizontalSpace(double width) {
 
 String formatDate(DateTime dt) {
   return DateFormat('yyyy-MM-dd').format(dt);
+}
+
+String formatTime(DateTime dt) {
+  return DateFormat('HH : mm : ss').format(dt);
 }

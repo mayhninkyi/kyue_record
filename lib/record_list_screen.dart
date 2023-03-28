@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kyue_app/database.dart';
 import 'package:kyue_app/record.dart';
+import 'package:kyue_app/record_detail.dart';
 
 import 'style.dart';
 
@@ -41,28 +42,37 @@ class RecordListScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                         color: Colors.blueGrey,
                         borderRadius: BorderRadius.circular(15)),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.black,
-                        radius: 16,
-                        child: Center(
-                          child: Text(
-                            record.tableName ?? '',
-                            style: kTextStyleTitle(14),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    RecordDetail(record: record)));
+                      },
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.black,
+                          radius: 16,
+                          child: Center(
+                            child: Text(
+                              record.tableName ?? '',
+                              style: kTextStyleTitle(14),
+                            ),
                           ),
                         ),
-                      ),
-                      title: Text(
-                        'Table ${(record.tableName ?? '')}',
-                        style: kTextStyleTitle(22),
-                      ),
-                      subtitle: Text(
-                        record.total.toString(),
-                        style: kTextStyleTitle(18),
-                      ),
-                      trailing: const Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.white,
+                        title: Text(
+                          'Table ${(record.tableName ?? '')}',
+                          style: kTextStyleTitle(22),
+                        ),
+                        subtitle: Text(
+                          record.total.toString(),
+                          style: kTextStyleTitle(18),
+                        ),
+                        trailing: const Icon(
+                          Icons.arrow_forward_ios,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   );
