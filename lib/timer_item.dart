@@ -118,26 +118,28 @@ class _TimerItemState extends State<TimerItem> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Spacer(),
                     Text(
-                      'Table $tableNo',
+                      'Table',
                       style: kTextStyleTitle(32),
                     ),
-                    const Spacer(),
                     value == '00 : 00 : 00'
                         ? Container()
-                        : CircleAvatar(
-                            radius: 15,
-                            backgroundColor: Colors.black,
-                            child: IconButton(
-                                onPressed: () {
-                                  _displayDialog(context);
-                                },
-                                icon: const Icon(
-                                  Icons.edit,
-                                  size: 12,
-                                )))
+                        : Padding(
+                            padding: const EdgeInsets.only(left: 12.0),
+                            child: CircleAvatar(
+                                radius: 15,
+                                backgroundColor: Colors.black,
+                                child: IconButton(
+                                    onPressed: () {
+                                      _displayDialog(context);
+                                    },
+                                    icon: const Icon(
+                                      Icons.edit,
+                                      size: 12,
+                                    ))),
+                          )
                   ],
                 ),
                 (record.note == '' || record.note == null)
@@ -149,7 +151,7 @@ class _TimerItemState extends State<TimerItem> {
                     : Text(
                         record.note ?? '',
                         maxLines: 2,
-                        style: kTextStyleTitle(16),
+                        style: kTextStyleTitle(32),
                       ),
                 Text(
                   value,
@@ -300,11 +302,26 @@ class _TimerItemState extends State<TimerItem> {
                       const Divider(
                         color: Colors.white,
                       ),
+                      Row(
+                        children: [
+                          const Spacer(),
+                          Text(
+                            '$totalValue',
+                            style: kTextStyleTitle(30),
+                          ),
+                          kHorizontalSpace(12),
+                        ],
+                      ),
                       ValueListenableBuilder(
                           valueListenable: timerPrice,
                           builder: (context, value, child) {
                             return Row(
                               children: [
+                                kHorizontalSpace(12),
+                                Text(
+                                  'ကျူခုံခ',
+                                  style: kTextStyleTitle(22),
+                                ),
                                 const Spacer(),
                                 Text(
                                   '$value',
@@ -314,6 +331,9 @@ class _TimerItemState extends State<TimerItem> {
                               ],
                             );
                           }),
+                      const Divider(
+                        color: Colors.white,
+                      ),
                       ValueListenableBuilder(
                           valueListenable: timerPrice,
                           builder: (context, value, child) {
@@ -321,8 +341,8 @@ class _TimerItemState extends State<TimerItem> {
                               children: [
                                 kHorizontalSpace(12),
                                 Text(
-                                  'Total',
-                                  style: kTextStyleTitle(30),
+                                  'စုစုပေါင်း',
+                                  style: kTextStyleTitle(22),
                                 ),
                                 const Spacer(),
                                 Text(

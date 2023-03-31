@@ -36,7 +36,7 @@ class Database {
       await db
           .collection('record')
           .doc(docId)
-          .set({'total': total + (record.total ?? 0)});
+          .set({'total': total + (record.total ?? 0), "date": docId});
       await db
           .collection('record')
           .doc(docId)

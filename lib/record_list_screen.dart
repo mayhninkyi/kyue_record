@@ -63,7 +63,7 @@ class RecordListScreen extends StatelessWidget {
                           ),
                         ),
                         title: Text(
-                          'Table ${(record.tableName ?? '')}',
+                          'Table ${record.note ?? ''}',
                           style: kTextStyleTitle(22),
                         ),
                         subtitle: Text(

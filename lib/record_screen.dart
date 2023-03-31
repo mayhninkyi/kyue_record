@@ -15,7 +15,10 @@ class RecordScreen extends StatelessWidget {
         backgroundColor: Colors.blueGrey,
       ),
       body: StreamBuilder(
-        stream: database.db.collection('record').snapshots(),
+        stream: database.db
+            .collection('record')
+            .orderBy('date', descending: true)
+            .snapshots(),
         builder: ((context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting ||
               snapshot.connectionState == ConnectionState.none) {

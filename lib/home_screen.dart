@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < 8; i++) {
       data.add(Record());
     }
     return Scaffold(
