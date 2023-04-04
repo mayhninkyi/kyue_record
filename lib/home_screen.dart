@@ -14,6 +14,9 @@ class HomeScreen extends StatelessWidget {
   Future<void> refresh() async {
     loading.value = true;
     List<Record> cache = await database.fetchCache();
+    for (int i = 0; i < 8; i++) {
+      data.add(Record());
+    }
     if (cache.isNotEmpty) {
       for (var val in cache) {
         int index = int.parse(val.tableName ?? '1') - 1;
